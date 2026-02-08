@@ -55,6 +55,25 @@ docker run -p 3000:3000 -e API_KEY=secret downloader
 
 The Dockerfile installs Chrome (for browser-based downloads), qpdf (for PDF decryption), and Typst (for PDF generation).
 
+## Railway Deployment
+
+The service is deployed on [Railway](https://railway.app) at `download.agents-tools.com`.
+
+1. Connect your GitHub repo to a Railway project
+2. Railway auto-detects the Dockerfile and builds from it
+3. Set environment variables in the Railway dashboard:
+   - `API_KEY` — your secret API key
+   - `PORT` — Railway sets this automatically, the app reads it via `config.ts`
+4. Add a custom domain (`download.agents-tools.com`) under Settings > Networking
+5. Deploys trigger automatically on push to main
+
+**Health check:** Railway can use `GET /health` as the healthcheck endpoint.
+
+**Notes:**
+- The Docker build requires `xz-utils` (already in the Dockerfile) to install the Typst binary
+- Chrome runs in headless mode with `--no-sandbox` inside the container
+- The image is ~500MB due to Chrome + system dependencies
+
 ## Environment Variables
 
 | Variable | Description | Default |
